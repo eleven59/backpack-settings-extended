@@ -19,7 +19,7 @@ This package extends the BackpackSettings module:
 
 This package requires
 * PHP 8.0+
-* [backpack/crud:4.1.*][link-backpack]
+* [backpack/crud:4.1.*|~5][link-backpack]
 * [backpack/settings:^3.0][link-backpack-settings]
 * [eleven59/backpack-images-traits:^1.0][link-image-traits]
 
