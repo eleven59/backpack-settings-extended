@@ -22,7 +22,7 @@ class Setting extends \Backpack\Settings\app\Models\Setting
                 'quality' => config('eleven59.backpack-settings-extended.image.quality'),
                 'format' => config('eleven59.backpack-settings-extended.image.format'),
             ]);
-        } elseif ($field->type == 'upload' || $field->type == '') {
+        } elseif ($field->type == 'upload') {
             $disk = config('eleven59.backpack-settings-extended.storage.disk');
             $path = config('eleven59.backpack-settings-extended.storage.destination_path');
             $this->uploadFileToDisk($value, "value", $disk, $path);
