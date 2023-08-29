@@ -11,15 +11,53 @@ return [
     // Storage disk and folder
     'storage' => [
         'disk' => 'public',
-        'destination_path' => 'uploads/settings',
+        'destination_path' => 'settings',
     ],
 
     // Options for image uploads
     'images' => [
         'disk' => 'public',
-        'destination_path' => 'uploads/settings',
+        'destination_path' => 'settings',
         'quality' => 65,
         'format' => 'jpg',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Summernote
+    |--------------------------------------------------------------------------
+    */
+
+    // Customize options for the summernote field
+    'summernote' => [
+        'options' => [
+            'toolbar' => [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+            ],
+            'styleTags' => [
+                'p',
+                [
+                    'title' => 'Blockquote',
+                    'tag' => 'blockquote',
+                    'className' => 'blockquote',
+                    'value' => 'blockquote'
+                ],
+                'pre',
+                'h1',
+                'h2',
+                'h3',
+                'h4',
+                'h5',
+                'h6'
+            ],
+        ],
     ],
 
 

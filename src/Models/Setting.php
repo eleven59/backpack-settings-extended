@@ -13,18 +13,22 @@ class Setting extends \Backpack\Settings\app\Models\Setting
 
     public function setValueAttribute($value)
     {
-        if(Str::startsWith($value, 'data:image')) {
+        $field = json_decode($this->field);
+
+        if($field->type == 'image') {
             $this->attributes['value'] = $this->uploadImageData($value, [
                 'disk' => config('eleven59.backpack-settings-extended.image.disk'),
                 'destination_path' => config('eleven59.backpack-settings-extended.image.destination_path'),
                 'quality' => config('eleven59.backpack-settings-extended.image.quality'),
                 'format' => config('eleven59.backpack-settings-extended.image.format'),
             ]);
-        } elseif (strlen($value) < 512 && is_file ($value)) {
+        } elseif ($field->type == 'upload' || $field->type == '') {
             $disk = config('eleven59.backpack-settings-extended.storage.disk');
             $path = config('eleven59.backpack-settings-extended.storage.destination_path');
             $this->uploadFileToDisk($value, "value", $disk, $path);
             $this->attributes['value'] = 'storage/' . $this->attributes['value'];
+        } elseif(stristr($this->field, 'summernote')) {
+            $this->attributes['value'] =clean($value);
         } else {
             $this->attributes['value'] = $value;
         }

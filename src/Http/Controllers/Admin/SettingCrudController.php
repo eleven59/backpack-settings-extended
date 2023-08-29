@@ -20,4 +20,22 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
             }
         }
     }
+
+    public function setupUpdateOperation()
+    {
+        CRUD::addField([
+            'name'       => 'name',
+            'label'      => trans('backpack::settings.name'),
+            'type'       => 'text',
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
+
+        $field = json_decode(CRUD::getCurrentEntry()->field, true);
+        if($field['type'] == 'summernote') {
+            $field['options'] = config('eleven59.backpack-settings-extended.summernote.options');
+        }
+        CRUD::addField($field);
+    }
 }
