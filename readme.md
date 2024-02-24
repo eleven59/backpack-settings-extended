@@ -6,10 +6,10 @@
 **Extension for BackpackSettings module**
 
 This package extends the BackpackSettings module:
-- you can nog use "upload" and "image" types for the field types in the database (image settings and upload disks are configurable).
 - easily create multiple backend pages for settings so you can categorize them for your users
 - custom sort order for settings list pages
 - customize entity names (use anything you want instead of "setting"/"settings")
+- translatable values for settings
 
 
 ## Installation
@@ -18,10 +18,10 @@ This package extends the BackpackSettings module:
 ### Dependencies
 
 This package requires
-* PHP 8.0+
-* [backpack/crud:4.1.*|~5][link-backpack]
-* [backpack/settings:^3.0][link-backpack-settings]
-* [eleven59/backpack-images-traits:^1.0][link-image-traits]
+* PHP 8.1+
+* [backpack/crud:^6.0][link-backpack]
+* [backpack/settings:^3.1][link-backpack-settings]
+* [spatie/laravel-translatable:^6.0][link-spatie-laravel-translatable]
 
 
 ### Installation
@@ -63,19 +63,6 @@ https://your-site/{backpack-admin-slug}/setting
 https://your-site/{backpack-admin-slug}/url-slug
 ```
 
-### Image and upload field types
-Image and upload fields are now automatically supported. Just use the following for your `field` column in the database and that's all she wrote. You can also change the upload path and disk as well as some standard options for the image compression in the `config/eleven59/backpack-settings-extended.php` file.
-
-#### Upload field:
-```json
-{"name": "value", "label": "Upload field", "type": "upload", "upload": true}
-```
-
-#### Image field:
-```json
-{"name": "value", "label": "Image cropper", "type": "image", "upload": true, "crop": true}
-```
-
 ### Custom sort order
 
 This package adds a `position` column to the settings table. By default, the list pages are ordered by this column in ascending order. You can change this behavior in the `config/eleven59/backpack-settings-extended.php` file:
@@ -99,10 +86,20 @@ This package allows you to change the default entity names of "setting" for sing
 ],
 ```
 
+### Translatable
+
+That just works. If you have defined more than one language in the config/backpack/crud.php file then the languages will magically appear in the settings CRUD create/update pages now.
+
 
 ## Change log
 
 Breaking changes will be listed here. For other changes see commit log.
+
+### V2.0
+- Now only works with backpack/crud:^6.0 and backpack/settings:^3.1
+- Accordingly, now requires PHP 8.1+ and backpack/pro is needed for pro fields
+- Added requirement for spatie/laravel-translatable:^6.0 for the translations
+- Removed requirement for eleven59/backpack-images-traits. This is already possible out of the box with Backpack 6.0 since you can use the WithFiles directive now.
 
 
 
@@ -128,4 +125,4 @@ However, please note that you do need Backpack installed, so you need to also ab
 [link-skeleton]: https://github.com/Laravel-Backpack/addon-skeleton
 [link-backpack]: https://github.com/Laravel-Backpack/CRUD
 [link-backpack-settings]: https://curatedphp.com/r/backpacksettings-laravel-backpacksettings/index.html
-[link-image-traits]: https://github.com/eleven59/backpack-image-traits
+[link-spatie-laravel-translatable]: https://github.com/spatie/laravel-translatable
