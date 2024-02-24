@@ -20,4 +20,27 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
             }
         }
     }
+
+    public function setupUpdateOperation()
+    {
+        CRUD::addField([
+            'name'       => 'name',
+            'label'      => trans('backpack::settings.name'),
+            'type'       => 'text',
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
+
+        $fields = config('eleven59.backpack-settings-extended.field-defaults') ?? [];
+        $field = json_decode(CRUD::getCurrentEntry()->field, true);
+        if(!empty($fields[$field['type'] ?? 'text'])) {
+            foreach($fields[$field['type'] ?? 'text'] as $index => $defaultOptions) {
+                if(empty($field[$index])) {
+                    $field[$index] = $defaultOptions;
+                }
+            }
+        }
+        CRUD::addField($field, true);
+    }
 }

@@ -9,6 +9,7 @@ This package extends the BackpackSettings module:
 - easily create multiple backend pages for settings so you can categorize them for your users
 - custom sort order for settings list pages
 - customize entity names (use anything you want instead of "setting"/"settings")
+- default options for field types
 - translatable values for settings
 
 
@@ -61,6 +62,43 @@ https://your-site/{backpack-admin-slug}/setting
 
 # Only settings with "type-column-value" as their DB type
 https://your-site/{backpack-admin-slug}/url-slug
+```
+
+### Default options for field types
+
+You can use the `config/eleven59/backpack-settings-extended.php` file to add custom default definitions for field types, so you don't have to enter complex stuff in the database, that sometimes does not even work (e.g. for ckeditor fields like in the example below).
+
+**Note:** the defaults are overwritten if the main key (i.e., 'crop' or 'withFiles' below) exists in the field definition in the database. The defaults are only used if the entire key is missing from the field definition in the database.
+
+
+```php
+'field-defaults' => [
+    'image' => [
+        'crop' => true,
+        'withFiles' => [
+            'disk' => 'public',
+            'path' => 'settings',
+        ],
+    ],
+    'ckeditor' => [
+        'options' => [
+            'heading' => [
+                'options' => [
+                    [
+                        'model' => 'heading2sick',
+                        'view' => [
+                            'name' => 'h2',
+                            'classes' => 'sick-heading',
+                        ],
+                        'title' => 'Sick heading',
+                        'class' => 'ck-h2',
+                        'converterPriority' => 'high',
+                    ],
+                ]
+            ]
+        ]
+    ],
+],
 ```
 
 ### Custom sort order
