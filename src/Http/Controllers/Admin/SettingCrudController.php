@@ -9,7 +9,7 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
     public function setup()
     {
         parent::setup();
-        CRUD::setModel("Eleven59\BackpackSettingsExtended\Models\Setting");
+        CRUD::setModel(config('eleven59.backpack-settings-extended.model'));
         CRUD::setEntityNameStrings(config('eleven59.backpack-settings-extended.entity-name-strings.singular'), config('eleven59.backpack-settings-extended.entity-name-strings.plural'));
         CRUD::orderBy(config('eleven59.backpack-settings-extended.order-by.field'), config('eleven59.backpack-settings-extended.order-by.order'));
 

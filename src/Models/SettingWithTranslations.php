@@ -4,14 +4,14 @@ namespace Eleven59\BackpackSettingsExtended\Models;
 
 use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
 
-class Setting extends \Backpack\Settings\app\Models\Setting
+class SettingWithTranslations extends \Backpack\Settings\app\Models\Setting
 {
+    use HasTranslations;
+
+    protected array $translatable = ['value'];
+
     public function __construct(array $attributes = [])
     {
-        if (!config('eleven59.backpack-settings-extended.enable-translations')) {
-            $this->translatable = [];
-        }
-
         parent::__construct($attributes);
     }
 

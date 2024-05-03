@@ -4,6 +4,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Which model should we use?
+    |--------------------------------------------------------------------------
+    |
+    | This setting has two default options:
+    | Default: \Eleven59\BackpackSettingsExtended\Models\SettingWithTranslations::class,
+    | Optional: \Eleven59\BackpackSettingsExtended\Models\Setting::class (use if you don't want translatable values)
+    |
+    | Additionally, you could extend the class and thus use a custom class.
+    */
+
+//    'model' => \Eleven59\BackpackSettingsExtended\Models\Setting::class,
+    'model' => \Eleven59\BackpackSettingsExtended\Models\SettingWithTranslations::class,
+
+    /*
+    |--------------------------------------------------------------------------
     | Multiple routes
     |--------------------------------------------------------------------------
     |
