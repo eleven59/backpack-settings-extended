@@ -59,9 +59,9 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
         }
 
         CRUD::addField([
-            'name'       => 'name',
-            'label'      => trans('backpack::settings.name'),
-            'type'       => 'text',
+            'name' => 'name',
+            'label' => trans('backpack::settings.name'),
+            'type' => 'text',
             'attributes' => [
                 'disabled' => 'disabled',
             ],
@@ -76,6 +76,7 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
                 }
             }
         }
+        if(!isset($field['name'])) $field['name'] = 'value';
         CRUD::addField($field, true);
     }
 }
