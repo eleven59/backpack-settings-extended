@@ -3,6 +3,7 @@
 namespace Eleven59\BackpackSettingsExtended\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Backpack\CRUD\app\Library\Widget;
 
 class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\SettingCrudController
 {
@@ -21,8 +22,42 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
         }
     }
 
+    public function setupListOperation()
+    {
+        if(!empty(config('eleven59.backpack-settings-extended.widgets.update'))) {
+            foreach(config('eleven59.backpack-settings-extended.widgets.update') as $options)
+            {
+                Widget::add($options);
+            }
+        }
+
+        CRUD::setColumns([
+            [
+                'name'  => 'name',
+                'label' => trans('backpack::settings.name'),
+            ],
+            [
+                'name'  => 'value',
+                'label' => trans('backpack::settings.value'),
+            ],
+            [
+                'name'  => 'description',
+                'label' => trans('backpack::settings.description'),
+            ],
+        ]);
+
+        CRUD::addClause('where', 'active', 1);
+    }
+
     public function setupUpdateOperation()
     {
+        if(!empty(config('eleven59.backpack-settings-extended.widgets.update'))) {
+            foreach(config('eleven59.backpack-settings-extended.widgets.update') as $options)
+            {
+                Widget::add($options);
+            }
+        }
+
         CRUD::addField([
             'name'       => 'name',
             'label'      => trans('backpack::settings.name'),

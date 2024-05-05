@@ -15,7 +15,6 @@
     ],
     "require": {
         "php" : "^8.1",
-        "illuminate/support": "^10.0",
         "backpack/crud": "^6.0",
         "backpack/settings": "^3.0",
         "spatie/laravel-translatable": "^6.0"
