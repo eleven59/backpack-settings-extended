@@ -14,7 +14,6 @@
         "Laravel", "Backpack", "Backpack for Laravel", "Backpack Addon", "BackpackSettingsExtended"
     ],
     "require": {
-        "php" : "^8.1",
         "backpack/crud": "^6.0",
         "backpack/settings": "^3.0",
         "spatie/laravel-translatable": "^6.0"

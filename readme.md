@@ -1,16 +1,17 @@
-# BackpackSettingsExtended
+# Backpack Settings Extended
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-**Extension for BackpackSettings module**
+**Extension for `backpack/settings`**
 
-This package extends the BackpackSettings module:
+This package extends the **Backpack for Laravel** `backpack/settings` package:
 - easily create multiple backend pages for settings so you can categorize them for your users
 - custom sort order for settings list pages
-- customize entity names (use anything you want instead of "setting"/"settings")
-- default options for field types
-- translatable values for settings
+- customize entity names (instead of "setting"/"settings")
+- default options for field types (e.g. custom ckeditor build)
+- add widgets to list or update operations
+- translatable settings
 
 
 ## Installation
@@ -19,7 +20,6 @@ This package extends the BackpackSettings module:
 ### Dependencies
 
 This package requires
-* PHP 8.1+
 * [backpack/crud:^6.0][link-backpack]
 * [backpack/settings:^3.1][link-backpack-settings]
 * [spatie/laravel-translatable:^6.0][link-spatie-laravel-translatable]
@@ -32,14 +32,15 @@ Via Composer
 # Install module + dependencies 
 composer require eleven59/backpack-settings-extended
 
-# Publish assets and run migrations
-php artisan vendor:publish --provider="Eleven59\BackpackSettingsExtended\AddonServiceProvider"
+# Publish Backpack Settings migration, then run all migrations
+php artisan vendor:publish --provider="Backpack\Settings\SettingsServiceProvider" --tags=migrations
 php artisan migrate
+
+# Publish Backpack Extended config file
+php artisan vendor:publish --provider="Eleven59\BackpackSettingsExtended\AddonServiceProvider"
 ```
-This should automatically prioritize backpack/settings to migrate first. However, If you run into migration errors:
-- Uninstall eleven59/backpack-settings-extended
-- Manuall install backpack/settings first and run migrations
-- Then reinstall eleven59/backpack-settings-extended using the commands above
+
+You will now find the config file at `config/eleven59/backpack-settings-extended.php`
 
 
 ## Usage
@@ -81,22 +82,30 @@ You can use the `config/eleven59/backpack-settings-extended.php` file to add cus
         ],
     ],
     'ckeditor' => [
-        'options' => [
-            'heading' => [
-                'options' => [
-                    [
-                        'model' => 'heading2sick',
-                        'view' => [
-                            'name' => 'h2',
-                            'classes' => 'sick-heading',
-                        ],
-                        'title' => 'Sick heading',
-                        'class' => 'ck-h2',
-                        'converterPriority' => 'high',
-                    ],
-                ]
-            ]
-        ]
+        'custom_build' => [
+            resource_path('assets/ckeditor/ckeditor.js'),
+            resource_path('assets/ckeditor/ckeditor-init.js'),
+        ],
+    ],
+],
+```
+
+### Widgets
+
+You can define widgets for both the list and update operations (since these are the only two available anyway). This will allow you to load custom scripts and css for example, which may help with some of the more convoluted custom default column defaults.
+
+```php
+'widgets' => [
+    'list' => [],
+    'update' => [
+        [
+            'type' => 'script',
+            'content' => 'https://unpkg.com/jquery-colorbox@1.6.4/jquery.colorbox-min.js',
+        ],
+        [
+            'type' => 'style',
+            'content' => 'https://unpkg.com/jquery-colorbox@1.6.4/example2/colorbox.css',
+        ],
     ],
 ],
 ```
@@ -126,12 +135,25 @@ This package allows you to change the default entity names of "setting" for sing
 
 ### Translatable
 
-That just works. If you have defined more than one language in the config/backpack/crud.php file then the languages will magically appear in the settings CRUD create/update pages now.
+If you want to use translatable settings, you can do so by enabling the custom Settings model included for that:
 
+```php
+//'model' => \Eleven59\BackpackSettingsExtended\Models\Setting::class, // <-- default
+'model' => \Eleven59\BackpackSettingsExtended\Models\SettingWithTranslations::class, // <-- switch to this one
+```
+
+Once you enable this, it "just works" and will automatically enable all languages you have enabled in the `config/backpack/crud.php` settings file.
+
+Unfortunately, the way `spatie/translatable` works, this setting can't be enabled on a per-entity basis (since it requires setting a static property on the model itself). So it's either all settings are translatable or none of them are.
 
 ## Change log
 
 Breaking changes will be listed here. For other changes see commit log.
+
+### V2.1
+The default model has been changed to the model that does not include the `HasTranslations` trait. This is better for those upgrading from backpack/settings after having already implemented it, because `spatie/translatable` changes the way the data is stored in and read from the database. Enabling by default would mean data loss, since all settings fields in the admin would be empty (because no translations could be found).
+
+However, since v2.0 of *this* package, the default model *did* include translations. If you're updating from v2.0, please make sure to use the translatable model, as described above under the **translatable** heading.
 
 ### V2.0
 - Now only works with backpack/crud:^6.0 and backpack/settings:^3.1
