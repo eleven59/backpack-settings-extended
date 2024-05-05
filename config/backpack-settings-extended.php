@@ -14,8 +14,8 @@ return [
     | Additionally, you could extend the class and thus use a custom class.
     */
 
-//    'model' => \Eleven59\BackpackSettingsExtended\Models\Setting::class,
-    'model' => \Eleven59\BackpackSettingsExtended\Models\SettingWithTranslations::class,
+    'model' => \Eleven59\BackpackSettingsExtended\Models\Setting::class,
+//    'model' => \Eleven59\BackpackSettingsExtended\Models\SettingWithTranslations::class,
 
     /*
     |--------------------------------------------------------------------------
