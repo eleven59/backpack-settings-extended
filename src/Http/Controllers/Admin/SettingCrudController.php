@@ -2,11 +2,17 @@
 
 namespace Eleven59\BackpackSettingsExtended\Http\Controllers\Admin;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
+use Backpack\Pro\Http\Controllers\Operations\DropzoneOperation;
+use Backpack\Pro\Jobs\PurgeTemporaryFiles;
+use Illuminate\Support\Facades\Storage;
 
 class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\SettingCrudController
 {
+    use DropzoneOperation { dropzoneUpload as originalDropzoneUpload; }
+
     public function setup()
     {
         parent::setup();
@@ -67,16 +73,32 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
             ],
         ]);
 
-        $fields = config('eleven59.backpack-settings-extended.field-defaults') ?? [];
-        $field = json_decode(CRUD::getCurrentEntry()->field, true);
-        if(!empty($fields[$field['type'] ?? 'text'])) {
-            foreach($fields[$field['type'] ?? 'text'] as $index => $defaultOptions) {
-                if(empty($field[$index])) {
-                    $field[$index] = $defaultOptions;
+        if(!empty(CRUD::getCurrentEntry()->field)) {
+            $fields = config('eleven59.backpack-settings-extended.field-defaults') ?? [];
+            $field = json_decode(CRUD::getCurrentEntry()->field, true);
+            if(!empty($fields[$field['type'] ?? 'text'])) {
+                foreach($fields[$field['type'] ?? 'text'] as $index => $defaultOptions) {
+                    if(empty($field[$index])) {
+                        $field[$index] = $defaultOptions;
+                    }
                 }
             }
+            if(!isset($field['name'])) $field['name'] = 'value';
+            CRUD::addField($field, true);
         }
-        if(!isset($field['name'])) $field['name'] = 'value';
-        CRUD::addField($field, true);
+
+    }
+
+    /**
+     * Some fixes for the dropzone field
+     */
+    public function dropzoneUpload()
+    {
+        CrudPanelFacade::getRequest()->request->add(['fieldName' => 'name']);
+        return $this->originalDropzoneUpload();
+    }
+    private function isValidDropzoneField($fieldName)
+    {
+        return 'name';
     }
 }
