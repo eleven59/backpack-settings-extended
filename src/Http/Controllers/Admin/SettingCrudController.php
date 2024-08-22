@@ -94,11 +94,11 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
      */
     public function dropzoneUpload()
     {
-        CrudPanelFacade::getRequest()->request->add(['fieldName' => 'name']);
+        CrudPanelFacade::getRequest()->request->add(['fieldName' => 'value']);
         return $this->originalDropzoneUpload();
     }
     private function isValidDropzoneField($fieldName)
     {
-        return 'name';
+        return 'value';
     }
 }
