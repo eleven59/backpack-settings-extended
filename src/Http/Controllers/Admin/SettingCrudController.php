@@ -2,33 +2,31 @@
 
 namespace Eleven59\BackpackSettingsExtended\Http\Controllers\Admin;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
 use Backpack\Pro\Http\Controllers\Operations\DropzoneOperation;
-use Backpack\Pro\Jobs\PurgeTemporaryFiles;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\JsonResponse;
 
 class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\SettingCrudController
 {
     use DropzoneOperation { dropzoneUpload as originalDropzoneUpload; }
 
-    public function setup()
+    public function setup(): void
     {
         parent::setup();
         CRUD::setModel(config('eleven59.backpack-settings-extended.model'));
         CRUD::setEntityNameStrings(config('eleven59.backpack-settings-extended.entity-name-strings.singular'), config('eleven59.backpack-settings-extended.entity-name-strings.plural'));
-        CRUD::orderBy(config('eleven59.backpack-settings-extended.order-by.field'), config('eleven59.backpack-settings-extended.order-by.order'));
+        $this->crud->orderBy(config('eleven59.backpack-settings-extended.order-by.field'), config('eleven59.backpack-settings-extended.order-by.order'));
 
         foreach(config('eleven59.backpack-settings-extended.routes') as $slug => $type) {
-            if(stristr(url()->current(), config('backpack.base.route_prefix', 'admin') . "/{$slug}")) {
+            if(stristr(url()->current(), config('backpack.base.route_prefix', 'admin') . "/$slug")) {
                 CRUD::setRoute(backpack_url($slug));
-                $this->crud->addClause('where', 'type', '=', "{$type}");
+                $this->crud->addClause('where', 'type', '=', "$type");
             }
         }
     }
 
-    public function setupListOperation()
+    public function setupListOperation(): void
     {
         if(!empty(config('eleven59.backpack-settings-extended.widgets.update'))) {
             foreach(config('eleven59.backpack-settings-extended.widgets.update') as $options)
@@ -37,7 +35,7 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
             }
         }
 
-        CRUD::setColumns([
+        $this->crud->setColumns([
             [
                 'name'  => 'name',
                 'label' => trans('backpack::settings.name'),
@@ -52,10 +50,10 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
             ],
         ]);
 
-        CRUD::addClause('where', 'active', 1);
+        $this->crud->addClause('where', 'active', 1);
     }
 
-    public function setupUpdateOperation()
+    public function setupUpdateOperation(): void
     {
         if(!empty(config('eleven59.backpack-settings-extended.widgets.update'))) {
             foreach(config('eleven59.backpack-settings-extended.widgets.update') as $options)
@@ -73,9 +71,9 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
             ],
         ]);
 
-        if(!empty(CRUD::getCurrentEntry()->field)) {
+        if(!empty($this->crud->getCurrentEntry()->field)) {
             $fields = config('eleven59.backpack-settings-extended.field-defaults') ?? [];
-            $field = json_decode(CRUD::getCurrentEntry()->field, true);
+            $field = json_decode($this->crud->getCurrentEntry()->field, true);
             if(!empty($fields[$field['type'] ?? 'text'])) {
                 foreach($fields[$field['type'] ?? 'text'] as $index => $defaultOptions) {
                     if(empty($field[$index])) {
@@ -84,7 +82,7 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
                 }
             }
             if(!isset($field['name'])) $field['name'] = 'value';
-            CRUD::addField($field, true);
+            CRUD::addField($field);
         }
 
     }
@@ -92,12 +90,14 @@ class SettingCrudController extends \Backpack\Settings\app\Http\Controllers\Sett
     /**
      * Some fixes for the dropzone field
      */
-    public function dropzoneUpload()
+    public function dropzoneUpload(): JsonResponse
     {
-        CrudPanelFacade::getRequest()->request->add(['fieldName' => 'value']);
+        $this->crud->getRequest()->request->add(['fieldName' => 'value']);
         return $this->originalDropzoneUpload();
     }
-    private function isValidDropzoneField($fieldName)
+
+    /** @noinspection PhpUnusedParameterInspection */
+    private function isValidDropzoneField($fieldName): string
     {
         return 'value';
     }

@@ -8,7 +8,8 @@ class AddonServiceProvider extends ServiceProvider
 {
     use AutomaticServiceProvider;
 
-    protected $vendorName = 'eleven59';
-    protected $packageName = 'backpack-settings-extended';
-    protected $commands = [];
+    protected string $vendorName = 'eleven59';
+    protected string $packageName = 'backpack-settings-extended';
+    protected array $commands = [];
+    private string $path;
 }

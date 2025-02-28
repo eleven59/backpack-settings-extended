@@ -11,7 +11,7 @@ class AddTypeToSettingsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('settings', function (Blueprint $table) {
             $table->string('type', 32)->after('id')->nullable();
@@ -24,7 +24,7 @@ class AddTypeToSettingsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('settings', function (Blueprint $table) {
             $table->dropColumn(['type', 'position']);
