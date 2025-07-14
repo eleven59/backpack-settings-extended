@@ -33,7 +33,7 @@ Via Composer
 composer require eleven59/backpack-settings-extended
 
 # Publish Backpack Settings migration, then run all migrations
-php artisan vendor:publish --provider="Backpack\Settings\SettingsServiceProvider" --tags=migrations
+php artisan vendor:publish --provider="Backpack\Settings\SettingsServiceProvider" --tag=migrations
 php artisan migrate
 
 # Publish Backpack Extended config file
