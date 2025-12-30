@@ -1,7 +1,7 @@
 # Backpack Settings Extended
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
-[![Total Downloads][ico-downloads]][link-downloads]
+[![Total Downloads][ico-downloads]][link-packagist]
 
 **Extension for `backpack/settings`**
 
@@ -180,9 +180,8 @@ However, please note that you do need Backpack installed, so you need to also ab
 [ico-downloads]: https://img.shields.io/packagist/dt/eleven59/backpack-settings-extended.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/eleven59/backpack-settings-extended
-[link-downloads]: https://packagist.org/packages/eleven59/backpack-settings-extended
-[link-author]: https://github.com/eleven59
+[link-author]: https://eleven59.nl
 [link-skeleton]: https://github.com/Laravel-Backpack/addon-skeleton
 [link-backpack]: https://github.com/Laravel-Backpack/CRUD
-[link-backpack-settings]: https://curatedphp.com/r/backpacksettings-laravel-backpacksettings/index.html
+[link-backpack-settings]: https://github.com/Laravel-Backpack/Settings
 [link-spatie-laravel-translatable]: https://github.com/spatie/laravel-translatable
