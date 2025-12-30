@@ -20,7 +20,7 @@ This package extends the **Backpack for Laravel** `backpack/settings` package:
 ### Dependencies
 
 This package requires
-* [backpack/crud:^6.0][link-backpack]
+* [backpack/crud:^6.0|^7.0][link-backpack]
 * [backpack/settings:^3.1][link-backpack-settings]
 * [spatie/laravel-translatable:^6.0][link-spatie-laravel-translatable]
 
