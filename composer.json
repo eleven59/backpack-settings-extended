@@ -14,9 +14,8 @@
         "Laravel", "Backpack", "Backpack for Laravel", "Backpack Addon", "BackpackSettingsExtended"
     ],
     "require": {
-        "backpack/crud": "^6.0",
-        "backpack/settings": "^3.1.2",
-        "spatie/laravel-translatable": "^6.0"
+        "backpack/crud": "^6.0|^7.0",
+        "backpack/settings": "^3.1.2"
     },
     "autoload": {
         "psr-4": {
